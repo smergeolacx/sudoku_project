@@ -7,7 +7,7 @@ clock = pygame.time.Clock()
 
 selector_x, selector_y = 0, 0
 
-cell_size = 80
+cell_size = 50
 height = cell_size*9
 width = cell_size*9
 screen = pygame.display.set_mode((height,width))
@@ -16,7 +16,7 @@ text_surf = pygame.font.Font(None,int(cell_size*0.7))
 #TODO: put selector and be able to change position and its value in it
 
 sq_width = height / 9
-
+selector_pos = ()
 class sudoku:
 
 
@@ -61,13 +61,17 @@ class sudoku:
             self.x += sq_width
         if keys[pygame.K_LEFT]:
             self.x -= sq_width
-        pygame.draw.rect(self.screen, yellow, pygame.Rect(self.x,self.y, sq_width, sq_width), 8)
+        pygame.draw.rect(self.screen, yellow, pygame.Rect(self.x,self.y, sq_width, sq_width), 5)
         if self.x < 0: self.x = 0
         if self.y < 0: self.y = 0
         if self.x > 640: self.x = 640
         if self.y > 640: self.y = 640
 
+        current_Pos = (int(self.x/cell_size),int(self.y/cell_size))
+        print(current_Pos)
+
     def modify(self):
+        pass
 
 
 
