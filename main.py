@@ -78,6 +78,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+
         # if event.type == pygame.KEYDOWN:
         #     if event.key == pygame.K_UP:
         #         selector_y -= sq_width
