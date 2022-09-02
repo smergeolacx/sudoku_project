@@ -39,7 +39,11 @@ class sudoku:
     def box(self):
         for row in range(9):
             for column in range(9):
-                pygame.draw.rect(self.screen, white,pygame.Rect(sq_width * row, sq_width * column, sq_width, sq_width))
+                if isinstance(prob[column][row],str):
+                    pygame.draw.rect(self.screen, light_gray,pygame.Rect(sq_width * row, sq_width * column, sq_width, sq_width))
+                else:
+                    pygame.draw.rect(self.screen, white,pygame.Rect(sq_width * row, sq_width * column, sq_width, sq_width))
+
         self.grid()
         for row in range(9):
             for column in range(9):
@@ -57,7 +61,13 @@ class sudoku:
             self.x += sq_width
         if keys[pygame.K_LEFT]:
             self.x -= sq_width
-        pygame.draw.rect(self.screen, yellow, pygame.Rect(0+self.x, 0+self.y, sq_width, sq_width),8)
+        pygame.draw.rect(self.screen, yellow, pygame.Rect(self.x,self.y, sq_width, sq_width), 8)
+        if self.x < 0: self.x = 0
+        if self.y < 0: self.y = 0
+        if self.x > 640: self.x = 640
+        if self.y > 640: self.y = 640
+
+    def modify(self):
 
 
 
@@ -68,14 +78,21 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        if event.type == pygame.KEYDOWN:
-            try:
-                if event.key == pygame.K_a:
-                    prob[0][0][0] = "0"
-            except:pass
+        # if event.type == pygame.KEYDOWN:
+        #     if event.key == pygame.K_UP:
+        #         selector_y -= sq_width
+        #     if event.key == pygame.K_DOWN:
+        #         selector_y += sq_width
+        #     if event.key == pygame.K_RIGHT:
+        #         selector_x += sq_width
+        #     if event.key == pygame.K_LEFT:
+        #         selector_x -= sq_width
+
     screen.fill(white)
     sudo.box()
     sudo.selector()
+    # pygame.draw.rect(screen, yellow, pygame.Rect(selector_x,selector_y, sq_width, sq_width), 5)
+
 
     pygame.display.flip()
     clock.tick(10)
