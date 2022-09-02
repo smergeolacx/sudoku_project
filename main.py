@@ -5,6 +5,8 @@ from sys import exit
 pygame.init()
 clock = pygame.time.Clock()
 
+selector_x, selector_y = 0, 0
+
 cell_size = 80
 height = cell_size*9
 width = cell_size*9
@@ -18,9 +20,10 @@ sq_width = height / 9
 class sudoku:
 
 
-    def __init__(self,screen,height):
+    def __init__(self,screen,x,y):
         self.screen = screen
-        self.image = pygame.image.load("pointer.png")
+        self.x = x
+        self.y = y
 
     def grid(self):
         for i in range(10):
@@ -44,13 +47,21 @@ class sudoku:
                 text_pos = text.get_rect(center=(((sq_width) * (row + 1))-sq_width/2, ((sq_width) * (column + 1))-sq_width/2))
                 screen.blit(text, text_pos)
 
-        # self.place()
+    def selector(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            self.y -= sq_width
+        if keys[pygame.K_DOWN]:
+            self.y += sq_width
+        if keys[pygame.K_RIGHT]:
+            self.x += sq_width
+        if keys[pygame.K_LEFT]:
+            self.x -= sq_width
+        pygame.draw.rect(self.screen, yellow, pygame.Rect(0+self.x, 0+self.y, sq_width, sq_width),8)
 
-    def place(self):
-        pass
 
 
-sudo = sudoku(screen,height)
+sudo = sudoku(screen,selector_x,selector_y)
 
 while True:
     for event in pygame.event.get():
@@ -64,6 +75,7 @@ while True:
             except:pass
     screen.fill(white)
     sudo.box()
+    sudo.selector()
 
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(10)
