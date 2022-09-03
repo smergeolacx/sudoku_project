@@ -94,7 +94,6 @@ while True:
                 if event.key == pygame.K_BACKSPACE:
                     prob[int(selector_y / cell_size)][int(selector_x / cell_size)][0] = " "
 
-
     screen.fill(white)
     sudo.box()
     pygame.draw.rect(screen, yellow, pygame.Rect(selector_x, selector_y, cell_size, cell_size), 5)
