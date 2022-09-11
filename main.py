@@ -1,19 +1,22 @@
-from settings import *
+# from settings import *
 import pygame
 from sys import exit
+from sudoku_solver import *
+import time
 
 pygame.init()
 clock = pygame.time.Clock()
 
 selector_x, selector_y = 0, 0
-# current_pos_x,current_pos_y = 0,0
+
 cell_size = 50
 height = cell_size*9
 width = cell_size*9
-screen = pygame.display.set_mode((height,width))
+screen = pygame.display.set_mode((width,height+50))
 text_surf = pygame.font.Font(None,int(cell_size*0.7))
 
-#TODO: put selector and be able to change position and its value in it
+
+solve(prob_2)
 
 selector_pos = ()
 class sudoku:
@@ -48,9 +51,28 @@ class sudoku:
         self.grid()
         for row in range(9):
             for column in range(9):
-                text = text_surf.render(prob[column][row][0], False, black)
+                if isinstance(prob[column][row],list):
+                    text = text_surf.render(str(prob[column][row][0]), False, black)
+                else:
+                    text = text_surf.render(str(prob[column][row]), False, black)
                 text_pos = text.get_rect(center=(((cell_size) * (row + 1))-cell_size/2, ((cell_size) * (column + 1))-cell_size/2))
                 screen.blit(text, text_pos)
+
+def check_solve():
+    l = []
+    try:
+        for j in range(9):
+            for i in zip(prob[j], prob_2[j]):
+                if int(i[0][0]) == int(i[1]):
+                    l.append(True)
+                else:
+                    l.append(False)
+        if all(l):
+            screen.fill("black")
+    except:
+        pass
+
+
 
 sudo = sudoku(screen,selector_x,selector_y)
 
@@ -70,36 +92,40 @@ while True:
             if event.key == pygame.K_LEFT:
                 selector_x -= cell_size
 
-            if isinstance(prob[int(selector_y/cell_size)][int(selector_x/cell_size)],list):
-                if event.key == pygame.K_0:
-                    prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "0"
-                if event.key == pygame.K_1:
-                    prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "1"
-                if event.key == pygame.K_2:
-                    prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "2"
-                if event.key == pygame.K_3:
-                    prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "3"
-                if event.key == pygame.K_4:
-                    prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "4"
-                if event.key == pygame.K_5:
-                    prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "5"
-                if event.key == pygame.K_6:
-                    prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "6"
-                if event.key == pygame.K_7:
-                    prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "7"
-                if event.key == pygame.K_8:
-                    prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "8"
-                if event.key == pygame.K_9:
-                    prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "9"
-                if event.key == pygame.K_BACKSPACE:
-                    prob[int(selector_y / cell_size)][int(selector_x / cell_size)][0] = " "
+            try:
+                if isinstance(prob[int(selector_y/cell_size)][int(selector_x/cell_size)],list):
+                    if event.key == pygame.K_0:
+                        prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "0"
+                    if event.key == pygame.K_1:
+                        prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "1"
+                    if event.key == pygame.K_2:
+                        prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "2"
+                    if event.key == pygame.K_3:
+                        prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "3"
+                    if event.key == pygame.K_4:
+                        prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "4"
+                    if event.key == pygame.K_5:
+                        prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "5"
+                    if event.key == pygame.K_6:
+                        prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "6"
+                    if event.key == pygame.K_7:
+                        prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "7"
+                    if event.key == pygame.K_8:
+                        prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "8"
+                    if event.key == pygame.K_9:
+                        prob[int(selector_y/cell_size)][int(selector_x/cell_size)][0] = "9"
+                    if event.key == pygame.K_BACKSPACE:
+                        prob[int(selector_y / cell_size)][int(selector_x / cell_size)][0] = " "
+            except:
+                pass
 
     screen.fill(white)
     sudo.box()
     pygame.draw.rect(screen, yellow, pygame.Rect(selector_x, selector_y, cell_size, cell_size), 5)
-    # if selector_x < 0: selector_x = 640
-    # if selector_y < 0: selector_y = 0
-    # if selector_x > 640: selector_x = 640
-    # if selector_y > 640: selector_y = 640
+    if selector_x < 0: selector_x = 0
+    if selector_y < 0: selector_y = 0
+    if selector_x >= cell_size*8: selector_x = cell_size*8
+    if selector_y >= cell_size*8: selector_y = cell_size*8
+    check_solve()
     pygame.display.flip()
     clock.tick(60)
